@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="deep_teal">#00695C</color>
+    <color name="charcoal_blue">#37474F</color>
+
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_500">#FF009688</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="gray_50">#FFF9FAFB</color>
+    <color name="gray_100">#FFF3F4F6</color>
+    <color name="gray_500">#C1BEBF</color>
+    <color name="gray_700">#FF374151</color>
+    <color name="gray_900">#FF111827</color>
+
+
+</resources>

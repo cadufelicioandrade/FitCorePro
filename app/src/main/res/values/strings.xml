@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FitCore Pro</string>
+    <string name="inicio">Início</string>
+    <string name="treino">Treino</string>
+    <string name="dieta">Dieta</string>
+    <string name="about_us">Sobre Nós</string>
+    <string name="about">Sobre</string>
+</resources>
