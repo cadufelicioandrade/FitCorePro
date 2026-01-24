@@ -5,15 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.fitcorepro.R
 import com.app.fitcorepro.model.Alimento
 import com.app.fitcorepro.model.Refeicao
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.xwray.groupie.GroupieAdapter
 
-class DietaFragment : Fragment() {
+class DietaFragment : Fragment(), RefeicaoView {
 
     private val adapter = GroupieAdapter()
     private lateinit var progress: ProgressBar
@@ -23,7 +25,11 @@ class DietaFragment : Fragment() {
         // TODO: implementar o presenter
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_dieta, container, false)
     }
 
@@ -39,43 +45,84 @@ class DietaFragment : Fragment() {
         // CRIAÇÃO DOS DADOS DE EXEMPLO
         // (No futuro, isso virá de um banco de dados ou API)
         val alimentosCafe = listOf(
-            Alimento( 1, "Ovo cozido", 2),
+            Alimento(1, "Ovo cozido", 2),
             Alimento(2, "Pão integral", 1),
             Alimento(3, "Mamão", 100)
         )
-
         val alimentosAlmoco = listOf(
             Alimento(4, "Filé de Frango", 150),
             Alimento(5, "Arroz integral", 200),
             Alimento(6, "Salada de alface", 50)
         )
-
-        val refeicaoCafe = Refeicao(1,"Café da Manhã", alimentosCafe)
-        val refeicaoAlmoco = Refeicao(2,"Almoço", alimentosAlmoco)
-
         val alimentosLancheTarde = listOf(
-            Alimento( 1, "Ovo cozido", 2),
+            Alimento(1, "Ovo cozido", 2),
             Alimento(2, "Pão integral", 1),
             Alimento(3, "Mamão", 100)
         )
-
         val alimentosJantar = listOf(
             Alimento(4, "Filé de Frango", 150),
             Alimento(5, "Arroz integral", 200),
             Alimento(6, "Salada de alface", 50)
         )
 
-        val refeicaoLancheTarde = Refeicao(3,"Lanche da Tarde", alimentosCafe)
-        val refeicaoJantar = Refeicao(4,"Jantar", alimentosAlmoco)
+        val refeicaoCafe = Refeicao(1, "Café da Manhã", alimentosCafe)
+        val refeicaoAlmoco = Refeicao(2, "Almoço", alimentosAlmoco)
+        val refeicaoLancheTarde = Refeicao(3, "Lanche da Tarde", alimentosLancheTarde)
+        val refeicaoJantar = Refeicao(4, "Jantar", alimentosJantar)
 
-        val listaDeRefeicoes = listOf(refeicaoCafe, refeicaoAlmoco,refeicaoLancheTarde,refeicaoJantar)
+        val listaDeRefeicoes = listOf(refeicaoCafe, refeicaoAlmoco, refeicaoLancheTarde, refeicaoJantar)
+        val addRefeicao = view.findViewById<FloatingActionButton>(R.id.fab_add_refeicao)
+
+        addRefeicao.setOnClickListener {
+            Toast.makeText(requireContext(), "Add refeição", Toast.LENGTH_SHORT).show()
+        }
 
         // Converte a lista de dados (List<Refeicao>) para uma lista de Itens do Groupie (List<RefeicaoItem>)
         val itemsParaAdapter = listaDeRefeicoes.map { refeicao ->
-            RefeicaoItem(refeicao)
+            RefeicaoItem(
+                refeicao,
+                { refeicaoARemover ->
+                    Toast.makeText(
+                        requireContext(),
+                        "Refeição removida: ${refeicaoARemover.id} - ${refeicaoARemover.titulo}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                },
+                {
+                    Toast.makeText(requireContext(), "Add Alimento", Toast.LENGTH_SHORT).show()
+                }, { alimentoEdit ->
+                    Toast.makeText(
+                        requireContext(),
+                        "Edit Alimento: ${alimentoEdit.id} - ${alimentoEdit.nome}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                }, { alimentoARemover ->
+                    Toast.makeText(
+                        requireContext(),
+                        "Remove Alimento: ${alimentoARemover.id} - ${alimentoARemover.nome}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                })
         }
 
         // Adiciona tudo ao adapter PRINCIPAL
         adapter.addAll(itemsParaAdapter)
+    }
+
+    override fun showLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun hideLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showRefeicoes(refeicoes: List<Refeicao>) {
+        TODO("Not yet implemented")
+    }
+
+    override fun showError(message: String) {
+        TODO("Not yet implemented")
     }
 }

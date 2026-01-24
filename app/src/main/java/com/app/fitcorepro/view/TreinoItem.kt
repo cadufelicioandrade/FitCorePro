@@ -55,7 +55,6 @@ class TreinoItem(private val treino: Treino?) : Item<TreinoItem.TreinoViewHolder
 
     private fun updateVisibility(itemView: View) {
         itemView.findViewById<RecyclerView>(R.id.rc_card_treino).isVisible = isExpanded
-        itemView.findViewById<TextView>(R.id.cabecalho_card_treino).isVisible = isExpanded
         itemView.findViewById<FloatingActionButton>(R.id.fab_add_treino).isVisible = isExpanded
 
         val toggleButton = itemView.findViewById<ImageButton>(R.id.btn_toggle_visibility_refeicao)

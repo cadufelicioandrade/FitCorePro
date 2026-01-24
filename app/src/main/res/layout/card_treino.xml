@@ -32,15 +32,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/txt_dia_semana"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <include
-        android:id="@+id/cabecalho_card_treino"
-        layout="@layout/cabecalho_card_treino"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_dia_semana" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rc_card_treino"
         android:layout_width="0dp"
@@ -49,7 +40,7 @@
         android:paddingBottom="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cabecalho_card_treino"
+        app:layout_constraintTop_toBottomOf="@+id/txt_dia_semana"
         tools:itemCount="5"
         tools:listitem="@layout/item_treino" />
 

@@ -13,8 +13,14 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
     <style name="Theme.FitCorePro.AppbarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-    <style name="Theme.FitCorePro.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="Theme.FitCorePro.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <!--Definindo a cor do botão na toolbar-->
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
+
     <style name="Theme.App.Starting" parent="Theme.SplashScreen" >
         <item name="windowSplashScreenBackground">@color/teal_500</item>
         <!--        <item name="windowSplashScreenAnimatedIcon">@drawable/jokerlogo</item>-->
