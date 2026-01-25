@@ -20,6 +20,16 @@
         android:id="@+id/nav_diet"
         android:label="@string/dieta"
         android:name="com.app.fitcorepro.view.DietaFragment"
-        tools:layout="@layout/fragment_dieta"/>
+        tools:layout="@layout/fragment_refeicao">
+        <action
+            android:id="@+id/action_nav_diet_to_nav_diet_week"
+            app:destination="@id/nav_diet_week" />
+    </fragment>
+
+    <fragment android:id="@+id/nav_diet_week"
+        android:label="@string/dieta"
+        android:name="com.app.fitcorepro.view.DietaSemanaFragment"
+        tools:layout="@layout/fragment_dieta_semana"/>
+
 
 </navigation>

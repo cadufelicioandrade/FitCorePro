@@ -7,4 +7,12 @@
     <string name="about">Sobre</string>
     <string name="exercicio">Exercícios</string>
     <string name="series">Séries</string>
+    <string name="hoje">Hoje</string>
+    <string name="seg">Seg</string>
+    <string name="ter">Ter</string>
+    <string name="qua">Qua</string>
+    <string name="qui">Qui</string>
+    <string name="sex">Sex</string>
+    <string name="sab">Sáb</string>
+    <string name="dom">Dom</string>
 </resources>
