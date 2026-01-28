@@ -7,7 +7,7 @@
 
     <include
         android:id="@+id/nav_days_diet_include"
-        layout="@layout/nav_days_diet"
+        layout="@layout/nav_days_week"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

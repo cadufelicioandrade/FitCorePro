@@ -2,9 +2,10 @@ package com.app.fitcorepro.model
 
 import java.util.Date
 
-data class Alimento(
+data class PlanoSemanal(
     val id: String,
     val nome: String,
-    val gramas: Int,
+    val ativo: Boolean,
+    val idUsuario: String,
     val createdDate: Date = Date()
 )

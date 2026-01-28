@@ -34,7 +34,7 @@ class RefeicaoItem(
     @SuppressLint("NotifyDataSetChanged")
     override fun bind(viewHolder: RefeicaoViewHolder, position: Int) {
         refeicao.let {
-            viewHolder.itemView.findViewById<TextView>(R.id.title_card).text = it.titulo
+            viewHolder.itemView.findViewById<TextView>(R.id.title_card).text = it.tipo
             val recyclerView = viewHolder.itemView.findViewById<RecyclerView>(R.id.rc_refeicao)
             val adapter = GroupieAdapter()
             recyclerView.layoutManager = LinearLayoutManager(viewHolder.itemView.context)
