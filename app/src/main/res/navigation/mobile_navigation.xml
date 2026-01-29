@@ -29,7 +29,16 @@
     <fragment android:id="@+id/nav_diet_week"
         android:label="@string/plano_semanal"
         android:name="com.app.fitcorepro.view.PlanoSemanalFragment"
-        tools:layout="@layout/fragment_dieta_semana"/>
+        tools:layout="@layout/fragment_plano_semanal">
+        <action
+            android:id="@+id/action_nav_diet_week_to_nav_new_plan_week"
+            app:destination="@id/nav_new_plan_week" />
+    </fragment>
+
+    <fragment android:id="@+id/nav_new_plan_week"
+        android:label="@string/cadastro_plano_semanal"
+        android:name="com.app.fitcorepro.view.CadastroPlanoSemanalFragment"
+        tools:layout="@layout/fragment_cadastro_novo_plano_semanal"/>
 
 
 </navigation>

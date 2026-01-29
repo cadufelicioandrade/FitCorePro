@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.fitcorepro.R
@@ -26,6 +27,7 @@ class PlanoSemanalFragment : Fragment(), PlanoSemanalView {
     private lateinit var progress: ProgressBar
     private lateinit var presenter: PlanoSemanalPresenter
     private var planoSemanalCompleto: PlanoSemanal? = null
+    private lateinit var btnNovoPlano: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +39,13 @@ class PlanoSemanalFragment : Fragment(), PlanoSemanalView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_dieta_semana, container, false)
+        return inflater.inflate(R.layout.fragment_plano_semanal, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        btnNovoPlano = view.findViewById(R.id.btn_new_plan)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_dieta)
         progress = view.findViewById(R.id.progress_bar_dieta)
@@ -59,6 +63,10 @@ class PlanoSemanalFragment : Fragment(), PlanoSemanalView {
         val addRefeicaoButton = view.findViewById<FloatingActionButton>(R.id.fab_add_refeicao)
         addRefeicaoButton.setOnClickListener {
             adicionarRefeicao()
+        }
+
+        btnNovoPlano.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_diet_week_to_nav_new_plan_week)
         }
 
     }
