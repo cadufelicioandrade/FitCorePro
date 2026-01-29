@@ -7,5 +7,6 @@ data class PlanoSemanal(
     val nome: String,
     val ativo: Boolean,
     val idUsuario: String,
-    val createdDate: Date = Date()
+    val createdDate: Date = Date(),
+    val planoSemanalDias: List<PlanoSemanalDia>
 )

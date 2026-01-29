@@ -4,14 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.fitcorepro.R
+import com.app.fitcorepro.enuns.DiaSemana
 import com.app.fitcorepro.model.Alimento
 import com.app.fitcorepro.model.PlanoSemanal
+import com.app.fitcorepro.model.PlanoSemanalDia
 import com.app.fitcorepro.model.Refeicao
 import com.app.fitcorepro.presentation.PlanoSemanalPresenter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -22,6 +25,7 @@ class PlanoSemanalFragment : Fragment(), PlanoSemanalView {
     private val adapter = GroupieAdapter()
     private lateinit var progress: ProgressBar
     private lateinit var presenter: PlanoSemanalPresenter
+    private var planoSemanalCompleto: PlanoSemanal? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,89 +49,159 @@ class PlanoSemanalFragment : Fragment(), PlanoSemanalView {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
-        // CRIAÇÃO DOS DADOS DE EXEMPLO
-        // (No futuro, isso virá de um banco de dados ou API)
-        val alimentosCafe = listOf(
-            Alimento("1", "Ovo cozido", 2),
-            Alimento("2", "Pão integral", 1),
-            Alimento("3", "Mamão", 100)
-        )
-        val alimentosAlmoco = listOf(
-            Alimento("4", "Filé de Frango", 150),
-            Alimento("5", "Arroz integral", 200),
-            Alimento("6", "Salada de alface", 50)
-        )
-        val alimentosLancheTarde = listOf(
-            Alimento("1", "Ovo cozido", 2),
-            Alimento("2", "Pão integral", 1),
-            Alimento("3", "Mamão", 100)
-        )
-        val alimentosJantar = listOf(
-            Alimento("4", "Filé de Frango", 150),
-            Alimento("5", "Arroz integral", 200),
-            Alimento("6", "Salada de alface", 50)
-        )
+        planoSemanalCompleto = createMockPlanoSemanal()
 
-        val refeicaoCafe = Refeicao("1", "Café da Manhã", 0,"1",alimentosCafe)
-        val refeicaoAlmoco = Refeicao("2", "Almoço", 0,"1",alimentosAlmoco)
-        val refeicaoLancheTarde = Refeicao("3", "Lanche da Tarde",  0,"1",alimentosLancheTarde)
-        val refeicaoJantar = Refeicao("4", "Jantar",  0,"1",alimentosJantar)
-
-        val listaDeRefeicoes = listOf(refeicaoCafe, refeicaoAlmoco, refeicaoLancheTarde, refeicaoJantar)
-        val addRefeicao = view.findViewById<FloatingActionButton>(R.id.fab_add_refeicao)
-
-        addRefeicao.setOnClickListener {
-            Toast.makeText(requireContext(), "Add refeição", Toast.LENGTH_SHORT).show()
+        if(planoSemanalCompleto != null){
+            setupDayButtons(view)
+            updateRecyclerViewForDay(DiaSemana.SEGUNDA)
         }
 
-        // Converte a lista de dados (List<Refeicao>) para uma lista de Itens do Groupie (List<RefeicaoItem>)
-        val itemsParaAdapter = listaDeRefeicoes.map { refeicao ->
-            RefeicaoItem(
-                refeicao,
-                { refeicaoARemover ->
-                    Toast.makeText(
-                        requireContext(),
-                        "Refeição removida: ${refeicaoARemover.id} - ${refeicaoARemover.tipo}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                },
-                {
-                    Toast.makeText(requireContext(), "Add Alimento", Toast.LENGTH_SHORT).show()
-                }, { alimentoEdit ->
-                    Toast.makeText(
-                        requireContext(),
-                        "Edit Alimento: ${alimentoEdit.id} - ${alimentoEdit.nome}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                }, { alimentoARemover ->
-                    Toast.makeText(
-                        requireContext(),
-                        "Remove Alimento: ${alimentoARemover.id} - ${alimentoARemover.nome}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                })
+        val addRefeicaoButton = view.findViewById<FloatingActionButton>(R.id.fab_add_refeicao)
+        addRefeicaoButton.setOnClickListener {
+            adicionarRefeicao()
         }
 
-        // Adiciona tudo ao adapter PRINCIPAL
-        adapter.addAll(itemsParaAdapter)
     }
 
     override fun showLoading() {
-        //TODO mostrar a barra de progresso
+        progress.visibility = View.VISIBLE
     }
 
     override fun hideLoading() {
-        //TODO ocultar a barra de progresso
+        progress.visibility = View.GONE
     }
 
     override fun showPlanoSemanal(planoSemanal: PlanoSemanal) {
+        val plan = planoSemanal.planoSemanalDias;
         // TODO passar o plano, refeições e seus respectivos alimentos para o adapter
         // ainda implementar as acões dos botões da semana (seg, ter, qua...)
     }
 
     override fun onError(message: String) {
-        //TODO apresentar mensagem de erro pro usuário
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
+
+    fun removerRefeicao(refeicao: Refeicao) {
+        Toast.makeText(
+            requireContext(),
+            "Refeição removida: ${refeicao.id} - ${refeicao.tipo}",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    fun adicionarRefeicao() {
+        Toast.makeText(requireContext(), "Add Refeição", Toast.LENGTH_SHORT).show()
+    }
+
+    fun adicionarAlimento() {
+        Toast.makeText(requireContext(), "Add Alimento", Toast.LENGTH_SHORT).show()
+    }
+
+    fun editarAlimento(alimento: Alimento) {
+        Toast.makeText(
+            requireContext(),
+            "Edit Alimento: ${alimento.id} - ${alimento.nome}",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    fun removerAlimento(alimento: Alimento) {
+        Toast.makeText(
+            requireContext(),
+            "Remove Alimento: ${alimento.id} - ${alimento.nome}",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun setupDayButtons(view: View){
+        view.findViewById<Button>(R.id.btn_monday).setOnClickListener {updateRecyclerViewForDay(DiaSemana.SEGUNDA)}
+        view.findViewById<Button>(R.id.btn_tuesday).setOnClickListener {updateRecyclerViewForDay(DiaSemana.TERCA)}
+        view.findViewById<Button>(R.id.btn_wednesday).setOnClickListener {updateRecyclerViewForDay(DiaSemana.QUARTA)}
+        view.findViewById<Button>(R.id.btn_thursday).setOnClickListener {updateRecyclerViewForDay(DiaSemana.QUINTA)}
+        view.findViewById<Button>(R.id.btn_friday).setOnClickListener {updateRecyclerViewForDay(DiaSemana.SEXTA)}
+        view.findViewById<Button>(R.id.btn_saturday).setOnClickListener {updateRecyclerViewForDay(DiaSemana.SABADO)}
+        view.findViewById<Button>(R.id.btn_sunday).setOnClickListener {updateRecyclerViewForDay(DiaSemana.DOMINGO)}
+    }
+
+    private fun updateRecyclerViewForDay(day: DiaSemana) {
+        val planoDoDia = planoSemanalCompleto?.planoSemanalDias?.find { it.diaSemana == day }
+
+        adapter.clear()
+        planoDoDia?.let { diaEncontrado ->
+            val itemsParaAdapter = diaEncontrado.refeicoes.map{ refeicao ->
+                RefeicaoItem(
+                    refeicao,
+                    {refeicaoRemover -> removerRefeicao(refeicaoRemover)},
+                    {adicionarAlimento()},
+                    {aliemntoEdit -> editarAlimento(aliemntoEdit)},
+                    {alimentoRemover -> removerAlimento(alimentoRemover)}
+                )
+            }
+            adapter.addAll(itemsParaAdapter)
+        }
+        Toast.makeText(requireContext(), "Exibindo dieta de: ${day.name}", Toast.LENGTH_SHORT).show()
+
+    }
+
+    // DADOS MOCKADOS PARA TESTE
+    fun createMockPlanoSemanal(): PlanoSemanal {
+        // --- Alimentos Genéricos para Reutilização ---
+        val alimentoOvo = Alimento(id = "1", nome = "Ovo cozido", gramas = 50)
+        val alimentoPao = Alimento(id = "2", nome = "Pão integral", gramas = 40)
+        val alimentoFrango = Alimento(id = "3", nome = "Filé de Frango", gramas = 150)
+        val alimentoArroz = Alimento(id = "4", nome = "Arroz integral", gramas = 100)
+        val alimentoSalada = Alimento(id = "5", nome = "Salada de alface e tomate", gramas = 80)
+        val alimentoBatataDoce = Alimento(id = "6", nome = "Batata doce", gramas = 120)
+        val alimentoIogurte = Alimento(id = "7", nome = "Iogurte Natural", gramas = 150)
+        val alimentoWhey = Alimento(id = "8", nome = "Whey Protein", gramas = 30)
+
+        // --- Montando os dias da semana ---
+        val planoDias = DiaSemana.values().map { dia ->
+            // Cria refeições diferentes para cada dia para o teste ser mais visual
+            val cafeDaManha = Refeicao(
+                id = "ref-cafe-${dia.ordinal}",
+                tipo = "Café da Manhã",
+                planoSemanaDiaId = "dia-${dia.ordinal}",
+                alimentos = when(dia) {
+                    DiaSemana.DOMINGO, DiaSemana.SEGUNDA, DiaSemana.QUARTA -> listOf(alimentoIogurte, alimentoWhey)
+                    else -> listOf(alimentoOvo, alimentoPao)
+                }
+            )
+
+            val almoco = Refeicao(
+                id = "ref-almoco-${dia.ordinal}",
+                tipo = "Almoço",
+                planoSemanaDiaId = "dia-${dia.ordinal}",
+                alimentos = when(dia) {
+                    DiaSemana.QUARTA, DiaSemana.SABADO -> listOf(alimentoFrango, alimentoBatataDoce, alimentoSalada)
+                    else -> listOf(alimentoFrango, alimentoArroz, alimentoSalada)
+                }
+            )
+
+            val jantar = Refeicao(
+                id = "ref-jantar-${dia.ordinal}",
+                tipo = "Jantar",
+                planoSemanaDiaId = "dia-${dia.ordinal}",
+                alimentos = listOf(alimentoFrango, alimentoSalada)
+            )
+
+            PlanoSemanalDia(
+                id = "dia-${dia.ordinal}",
+                planoSemanaId = "plano1",
+                diaSemana = dia,
+                refeicoes = listOf(cafeDaManha, almoco, jantar)
+            )
+        }
+
+        // --- Objeto Principal ---
+        return PlanoSemanal(
+            id = "plano1",
+            nome = "Plano de Hipertrofia Básico",
+            ativo = true,
+            idUsuario = "user123",
+            planoSemanalDias = planoDias
+        )
+    }
+
 
 }

@@ -17,7 +17,7 @@
         android:text="@string/monday" />
 
     <Button
-        android:id="@+id/btm_tuesday"
+        android:id="@+id/btn_tuesday"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:text="@string/tuesday" />
 
     <Button
-        android:id="@+id/btm_wednesday"
+        android:id="@+id/btn_wednesday"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
         android:text="@string/wednesday" />
 
     <Button
-        android:id="@+id/btm_thursday"
+        android:id="@+id/btn_thursday"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         android:text="@string/thursday" />
 
     <Button
-        android:id="@+id/btm_friday"
+        android:id="@+id/btn_friday"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
         android:text="@string/friday" />
 
     <Button
-        android:id="@+id/btm_saturday"
+        android:id="@+id/btn_saturday"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
         android:text="@string/saturday" />
 
     <Button
-        android:id="@+id/btm_sunday"
+        android:id="@+id/btn_sunday"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

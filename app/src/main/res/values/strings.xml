@@ -16,4 +16,8 @@
     <string name="saturday">Sáb</string>
     <string name="sunday">Dom</string>
     <string name="plano_semanal">Plano Semanal</string>
+    <string name="title_week_plan_diet">Plano Semanal 01</string>
+    <string name="novo_plano">Novo Plano</string>
+    <string name="cadastro_plano_semanal">Cadastro Plano Semanal</string>
+    <string name="cadastrar">cadastrar</string>
 </resources>
