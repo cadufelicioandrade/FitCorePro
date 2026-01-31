@@ -29,13 +29,4 @@
         android:layout_height="wrap_content"
         tools:text="Ovo mexido"/>
 
-    <TextView
-        android:id="@+id/nome_gramas_added"
-        android:textSize="18sp"
-        android:textStyle="bold|italic"
-        android:layout_marginEnd="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="100"/>
-
 </LinearLayout>

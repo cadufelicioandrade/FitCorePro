@@ -8,8 +8,7 @@ import com.xwray.groupie.Item
 
 class CadastroPlanoSemanalItem(
     private val refeicao: String,
-    private val alimento: String,
-    private val gramas: String
+    private val alimentos: String
 ) : Item<CadastroPlanoSemanalItem.CadastroPlanoSemanalViewHolder>() {
 
     class CadastroPlanoSemanalViewHolder(itemView: View) : GroupieViewHolder(itemView)
@@ -18,8 +17,7 @@ class CadastroPlanoSemanalItem(
 
     override fun bind(viewHolder: CadastroPlanoSemanalViewHolder, position: Int) {
         viewHolder.itemView.findViewById<TextView>(R.id.nome_refeicao_added).text = refeicao
-        viewHolder.itemView.findViewById<TextView>(R.id.nome_alimento_added).text = alimento
-        viewHolder.itemView.findViewById<TextView>(R.id.nome_gramas_added).text = gramas
+        viewHolder.itemView.findViewById<TextView>(R.id.nome_alimento_added).text = alimentos
     }
 
     override fun getLayout() = R.layout.item_refeicao_cadastro_plano_semanal
