@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.fitcorepro.R
 import com.app.fitcorepro.enuns.DiaSemana
 import com.app.fitcorepro.model.Alimento
+import com.app.fitcorepro.model.PlanoSemanal
+import com.app.fitcorepro.model.PlanoSemanalDia
 import com.app.fitcorepro.model.Refeicao
 import com.xwray.groupie.GroupieAdapter
 import java.util.Date
@@ -35,6 +37,8 @@ class CadastroPlanoSemanalFragment : Fragment() {
 
     private var alimentosParaNovaRefeicao = mutableListOf<Alimento>()
     private var refeicoesParaUmDia = mutableListOf<Refeicao>()
+
+    private var refeicoesSemana = mutableMapOf<String, MutableList<Refeicao>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,11 +65,18 @@ class CadastroPlanoSemanalFragment : Fragment() {
         btnAddAlimentoNaRefeicao = view.findViewById(R.id.btn_add_alimento_a_refeicao)
 
         // *** Buscando os TextInputLayouts para usar o .error ***
-        val layoutNomePlano = view.findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.layout_nome_plano_semanal)
-        val layoutDiaSemana = view.findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.layout_dia_semana)
-        val layoutNomeRefeicao = view.findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.layout_nova_refeicao_nome)
-        val layoutNomeAlimento = view.findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.layout_novo_alimento_nome)
-        val layoutGramas = view.findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.layout_novo_grama_alimento)
+        val layoutNomePlano =
+            view.findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.layout_nome_plano_semanal)
+        val layoutDiaSemana =
+            view.findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.layout_dia_semana)
+        val layoutNomeRefeicao =
+            view.findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.layout_nova_refeicao_nome)
+        val layoutNomeAlimento =
+            view.findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.layout_novo_alimento_nome)
+        val layoutGramas =
+            view.findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.layout_novo_grama_alimento)
+        val btnSalvarPlano = view.findViewById<Button>(R.id.btn_salvar_plano)
+
 
         val diasSemanaFormatados = DiaSemana.entries.map {
             it.name.lowercase().replaceFirstChar { char -> char.uppercase() }
@@ -87,12 +98,15 @@ class CadastroPlanoSemanalFragment : Fragment() {
         rc_refeicao.layoutManager = LinearLayoutManager(requireContext())
         rc_refeicao.adapter = adapterRefeicao
 
+        lstDiasSemana.setOnItemClickListener { parent, _, position, _ ->
+            val diaSelecionado = parent.getItemAtPosition(position).toString()
+            carregarRefeicoesDoDia(diaSelecionado)
+        }
 
         btnAddAlimentoNaRefeicao.setOnClickListener {
             val nomeAlimento = editNomeAlimento.text.toString()
             val gramas = editGramaAlimento.text.toString()
 
-            // --- VALIDAÇÃO CORRIGIDA ---
             if (nomeAlimento.isBlank() || gramas.isBlank()) {
                 layoutNomeAlimento.error = if (nomeAlimento.isBlank()) "Obrigatório" else null
                 layoutGramas.error = if (gramas.isBlank()) "Obrigatório" else null
@@ -126,7 +140,6 @@ class CadastroPlanoSemanalFragment : Fragment() {
             val nomeRefeicao = editNomeRefeicao.text.toString()
             val diaSelecionado = lstDiasSemana.text.toString()
 
-            // --- VALIDAÇÃO CORRIGIDA ---
             val isNomeRefeicaoEmpty = nomeRefeicao.isBlank()
             val isAlimentosListEmpty = alimentosParaNovaRefeicao.isEmpty()
             val isDiaSemanaEmpty = diaSelecionado.isBlank()
@@ -136,13 +149,31 @@ class CadastroPlanoSemanalFragment : Fragment() {
                 layoutDiaSemana.error = if (isDiaSemanaEmpty) "Selecione um dia" else null
 
                 if (isAlimentosListEmpty) {
-                    Toast.makeText(requireContext(), "Adicione pelo menos um alimento à refeição", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Adicione pelo menos um alimento à refeição",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 return@setOnClickListener
             }
             // Limpa erros anteriores
             layoutNomeRefeicao.error = null
             layoutDiaSemana.error = null
+
+
+            val novoRefeicao = Refeicao(
+                "",
+                editNomeRefeicao.text.toString(),
+                1,
+                diaSelecionado,
+                alimentosParaNovaRefeicao.toMutableList(),
+                Date()
+            )
+
+            refeicoesSemana.getOrPut(diaSelecionado) { mutableListOf() }.add(novoRefeicao)
+
+            carregarRefeicoesDoDia(diaSelecionado)
 
             adapterRefeicao.add(
                 CadastroPlanoSemanalItem(
@@ -166,6 +197,64 @@ class CadastroPlanoSemanalFragment : Fragment() {
             editNomeAlimento.text.clear()
             editGramaAlimento.text.clear()
             editNomeRefeicao.requestFocus()
+        }
+
+        btnSalvarPlano.setOnClickListener {
+            val nomeDoPlano = txtNomePlanoSemanal.text.toString()
+
+            if (nomeDoPlano.isBlank()) {
+                layoutNomePlano.error = "Obrigatório"
+                return@setOnClickListener
+            }
+
+            layoutNomePlano.error = null
+
+            if (refeicoesSemana.isEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    "Adicione pelo menos um dia com uma refeição",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            var planoSemanalDiaList = mutableListOf<PlanoSemanalDia>()
+
+
+            refeicoesSemana.map { (dia, refeicoes) ->
+                val planoSemanalDia = PlanoSemanalDia(
+                    "",
+                    "",
+                    DiaSemana.valueOf(dia.uppercase()),
+                    Date(),
+                    refeicoes
+                )
+                planoSemanalDiaList.add(planoSemanalDia)
+
+            }
+
+            val planoSemanal = PlanoSemanal(
+                "",
+                nomeDoPlano,
+                true,
+                "",
+                Date(),
+                planoSemanalDiaList
+            )
+
+            // TODO: Chamar o seu Presenter/ViewModel para enviar 'planoSemanal' e 'nomeDoPlano' para o backend
+        }
+    }
+
+    private fun carregarRefeicoesDoDia(diaSelecionado: String) {
+        adapterRefeicao.clear()
+        val refeicoesDoDia = refeicoesSemana[diaSelecionado]
+
+        if (refeicoesDoDia != null) {
+            val itemsParaAdapter = refeicoesDoDia.map { refeicao ->
+                val descricao = refeicao.alimentos.take(3).joinToString(", ") { it.nome }
+                CadastroPlanoSemanalItem(refeicao.tipo, descricao)
+            }
         }
     }
 }

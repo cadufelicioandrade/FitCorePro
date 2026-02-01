@@ -19,5 +19,6 @@
     <string name="title_week_plan_diet">Plano Semanal 01</string>
     <string name="novo_plano">Novo Plano</string>
     <string name="cadastro_plano_semanal">Cadastro Plano Semanal</string>
+    <string name="header_plano_semanal">Planeje sua alimentação semanal</string>
     <string name="cadastrar">cadastrar</string>
 </resources>

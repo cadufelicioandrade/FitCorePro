@@ -15,7 +15,7 @@
         android:background="@color/deep_teal"
         android:gravity="center"
         android:padding="12dp"
-        android:text="@string/cadastro_plano_semanal"
+        android:text="@string/header_plano_semanal"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold|italic"
@@ -23,18 +23,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/btn_salvar_plano"
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Salvar"
+        app:icon="@drawable/outline_save_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_title" />
+
+    <!-- TextInputLayout MODIFICADO para dar espaço ao botão -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_nome_plano_semanal"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:hint="Nome do Plano"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/btn_salvar_plano"
+        app:layout_constraintEnd_toStartOf="@id/btn_salvar_plano"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header_title">
+        app:layout_constraintTop_toTopOf="@id/btn_salvar_plano">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_nome_plano"
@@ -51,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="Dia da Semana"
-        app:layout_constraintEnd_toEndOf="@id/layout_nome_plano_semanal"
+        app:layout_constraintEnd_toEndOf="@id/btn_salvar_plano"
         app:layout_constraintStart_toStartOf="@id/layout_nome_plano_semanal"
         app:layout_constraintTop_toBottomOf="@id/layout_nome_plano_semanal">
 

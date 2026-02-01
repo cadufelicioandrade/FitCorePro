@@ -10,6 +10,12 @@ class PlanoSemanalPresenter(
 ) : PlanoSemanalCallback {
 
 
+    fun cadastrarPlanoSemanal(planoSemanal: PlanoSemanal) {
+        view.showLoading()
+        dataSource.cadastrarPlanoSemanal(planoSemanal, this)
+    }
+
+
     fun findPlanoSemanalByUsuarioId(usuarioId: String) {
         view.showLoading()
         dataSource.findPlanoSemanalByUsuarioId(usuarioId, this)
